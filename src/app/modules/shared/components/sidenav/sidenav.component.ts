@@ -12,7 +12,7 @@ export class SidenavComponent implements OnInit {
 
   menuNav = [
     {name: "Home", route: "home", icon: "home"},
-    {name: "Categorias", route: "categories", icon: "category"},
+    {name: "Categorias", route: "category", icon: "category"},
     {name: "Productos", route: "products", icon: "production_quantity_limits"}
   ];
 
@@ -21,7 +21,8 @@ export class SidenavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    // throw new Error('Method not implemented.');
+    console.log("Method not implemented");
   }
 
 }
