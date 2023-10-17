@@ -1,7 +1,10 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { CategoryService } from 'src/app/modules/shared/services/category.service';
+import { NewCategoryComponent } from '../new-category/new-category.component';
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-category',
@@ -10,8 +13,11 @@ import { CategoryService } from 'src/app/modules/shared/services/category.servic
 })
 export class CategoryComponent implements OnInit {
 
-  // Inyectamos el Servicio de categorias
+  // Inyectamos el Servicio de categorias y los elementos de Angular Material 
   private categoryService = inject(CategoryService);
+  public  dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+  
 
   // Columnas que van a ser mostradas en la tabla de la consulta 
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
@@ -60,6 +66,41 @@ export class CategoryComponent implements OnInit {
       this.dataSource = new MatTableDataSource<CategoryElement>(dataCategory);
 
     }
+
+  }
+
+  /**
+   * Apertura de un Dialog Modal cuando se pulsa el boton de Agregar Categoria
+   */
+  openCategoryDialog() {
+    // Se abre un Dialog que contiene en su interior el componente NewCategoryComponent
+    const dialogRef = this.dialog.open(NewCategoryComponent, {
+      width: '450px',
+      data: {},
+    });
+
+    // Logica a ejecutar una vez se haya cerrado la ventana Dialog
+    dialogRef.afterClosed().subscribe( (result: any) => {
+      console.log('The dialog was closed');
+      
+      // Controlamos el retorno correcto o error
+      if (result == 1) {
+        this.openSnackBar("Categoria Agregada", "Exito");
+        // Recargamos la tabla de categorias
+        this.getCategories();
+      } else if (result == 2) {
+        this.openSnackBar("Se produjo un error al guarda categoria", "Error");
+      }
+
+    });
+  }
+
+  /**
+   * Abrir mensaje en una ventana
+   */
+  openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
+
+    return this.snackBar.open(message, action, {duration: 2000});
 
   }
 
