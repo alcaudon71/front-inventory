@@ -75,7 +75,7 @@ export class CategoryComponent implements OnInit {
   openCategoryDialog() {
     // Se abre un Dialog que contiene en su interior el componente NewCategoryComponent
     const dialogRef = this.dialog.open(NewCategoryComponent, {
-      width: '450px',
+      width: '450px',   // ancho de la ventana del dialog
       data: {},
     });
 
@@ -89,11 +89,41 @@ export class CategoryComponent implements OnInit {
         // Recargamos la tabla de categorias
         this.getCategories();
       } else if (result == 2) {
-        this.openSnackBar("Se produjo un error al guarda categoria", "Error");
+        this.openSnackBar("Se produjo un error al guardar categoria", "Error");
       }
 
     });
   }
+
+  /**
+   * Modificar Categoria 
+   * @param id
+   * @param name
+   * @param description 
+   */
+  onEdit (id1: number , name1: string, description1: string) {
+    // Se abre un Dialog que contiene en su interior el componente NewCategoryComponent
+    const dialogRef = this.dialog.open(NewCategoryComponent, {
+      width: '450px',   // ancho de la ventana del dialog
+      data: {id: id1, name: name1, description: description1},
+    });
+
+    // Logica a ejecutar una vez se haya cerrado la ventana Dialog
+    dialogRef.afterClosed().subscribe( (result: any) => {
+      console.log('The dialog was closed');
+      
+      // Controlamos el retorno correcto o error
+      if (result == 1) {
+        this.openSnackBar("Categoria actualizada", "Exito");
+        // Recargamos la tabla de categorias
+        this.getCategories();
+      } else if (result == 2) {
+        this.openSnackBar("Se produjo un error al actualizar categoria", "Error");
+      }
+
+    });
+  }
+
 
   /**
    * Abrir mensaje en una ventana
