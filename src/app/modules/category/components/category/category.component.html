@@ -9,7 +9,7 @@
             <!-- Componente Form Field de AM -->
             <mat-form-field hintLabel="Busque categoria" appearance="fill">
                 <mat-label>Buscar Categorías</mat-label>
-                <input matInput #input1>
+                <input matInput #input1 (keyup)="buscar(input1.value)">   <!-- keyup dispara evento cuando soltemos la tecla -->
             </mat-form-field>
         </div>
     </mat-card-header>

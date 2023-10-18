@@ -156,6 +156,32 @@ export class CategoryComponent implements OnInit {
   }
 
   /**
+   * Buscar Categorias que empiecen por un determinado literal 
+   * @param termino 
+   * @returns 
+   */
+  buscar( termino: string) {
+
+    // Si el usuario no introduce literal, recuperamos el totalde categorias
+    if (termino.length == 0) {
+      return this.getCategories();
+    }
+
+    // Trabajamos con el literal introducido por el usuario en la casilla de busqueda
+    let obsCategoryGet = this.categoryService.getCategoryById(termino);
+
+    obsCategoryGet.subscribe({
+      next: (resp:any) => {
+        // Cargar el datasource con la info recibida en el item del observable
+        this.processCategoriesResponse(resp);
+      }
+      ,
+      error: (error:any) => {}
+    });
+
+  }
+
+  /**
    * Abrir mensaje en una ventana
    */
   openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
