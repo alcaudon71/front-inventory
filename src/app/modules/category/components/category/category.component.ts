@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
@@ -6,6 +6,7 @@ import { CategoryService } from 'src/app/modules/shared/services/category.servic
 import { NewCategoryComponent } from '../new-category/new-category.component';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-category',
@@ -24,6 +25,11 @@ export class CategoryComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
   // Datasource para transferir datos
   dataSource = new MatTableDataSource<CategoryElement>();
+
+  // Atributo del paginador
+  @ViewChild(MatPaginator)
+  paginator!: MatPaginator;
+
 
   ngOnInit(): void {
     console.log("CategoryComponent - ngOnInit");
@@ -65,6 +71,9 @@ export class CategoryComponent implements OnInit {
 
       // Cargamos el listado de elementos en el datasource que se mostrará en el html
       this.dataSource = new MatTableDataSource<CategoryElement>(dataCategory);
+
+      // Paginacion
+      this.dataSource.paginator = this.paginator;
 
     }
 
