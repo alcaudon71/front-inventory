@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { CategoryService } from 'src/app/modules/shared/services/category.service';
 import { NewCategoryComponent } from '../new-category/new-category.component';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-category',
@@ -73,6 +74,8 @@ export class CategoryComponent implements OnInit {
    * Apertura de un Dialog Modal cuando se pulsa el boton de Agregar Categoria
    */
   openCategoryDialog() {
+    console.log("Category - openCategoryDialog ");
+
     // Se abre un Dialog que contiene en su interior el componente NewCategoryComponent
     const dialogRef = this.dialog.open(NewCategoryComponent, {
       width: '450px',   // ancho de la ventana del dialog
@@ -101,7 +104,9 @@ export class CategoryComponent implements OnInit {
    * @param name
    * @param description 
    */
-  onEdit (id1: number , name1: string, description1: string) {
+  onEdit (id1: number , name1: string, description1: string): void {
+    console.log("Category - onEdit ");
+
     // Se abre un Dialog que contiene en su interior el componente NewCategoryComponent
     const dialogRef = this.dialog.open(NewCategoryComponent, {
       width: '450px',   // ancho de la ventana del dialog
@@ -124,6 +129,31 @@ export class CategoryComponent implements OnInit {
     });
   }
 
+  /**
+   * Eliminar Categoria 
+   * @param id
+   */
+  onDelete (id1: number): void  {
+    // Se abre un Dialog que contiene en su interior el componente ventana modal de Confirmacion
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      data: {id: id1},
+    });
+
+    // Logica a ejecutar una vez se haya cerrado la ventana Dialog
+    dialogRef.afterClosed().subscribe( (result: any) => {
+      console.log('The dialog was closed');
+      
+      // Controlamos el retorno correcto o error
+      if (result == 1) {
+        this.openSnackBar("Categoria eliminada", "Exito");
+        // Recargamos la tabla de categorias
+        this.getCategories();
+      } else if (result == 2) {
+        this.openSnackBar("Se produjo un error al eliminar categoria", "Error");
+      }
+
+    });
+  }
 
   /**
    * Abrir mensaje en una ventana

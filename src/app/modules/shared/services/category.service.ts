@@ -57,4 +57,19 @@ export class CategoryService {
 
   }
 
+  /**
+   * Eliminar categoria
+   * endpoint --> http://localhost:8080/api/v1/categories/4
+   * @param id   Id de la categoria que debe ser modificada
+   * @returns Observable
+   */
+  deleteCategory(id: any): Observable<Object> {
+    const endpoint = `${base_url}/categories/${id}`;  
+
+    let retorno: Observable<Object> = this.http.delete(endpoint);   // delete --> eliminar registro
+
+    return retorno;
+
+  }
+
 }

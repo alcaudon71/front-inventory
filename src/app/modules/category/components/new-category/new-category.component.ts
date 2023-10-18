@@ -47,8 +47,11 @@ export class NewCategoryComponent implements OnInit {
     // Los datos que vienen corresponden a la info actual que tiene la categoria
     // Por tanto, la ventana Dialog se abrira mostrando en el formulario los datos actuales
     if (this.data.name != null) {
+      console.log(" *** Funcionalidad Modificar *** ");
       this.updateForm (this.data);
       this.estadoFormulario = "Actualizar";
+    } else {
+      console.log(" *** Funcionalidad Agregar *** ");
     }
 
 
@@ -59,6 +62,8 @@ export class NewCategoryComponent implements OnInit {
    * Se invoca desde el boton Guardar de la ventana Dialog de nueva categoria
    */
   onSave(): void {
+    console.log("NewCategory - onSave -data: ", this.data );
+
     let dataJson = {
       name: this.categoryForm.get('name')?.value,   // esto obtiene "value" si el campo no es null
       description: this.categoryForm.get('description')?.value 
@@ -66,7 +71,7 @@ export class NewCategoryComponent implements OnInit {
 
     // Si el Dialog no tenia datos de partida --> funcion crear
     // Si el Dialog ya tenia datos al principio --> funcion modificar
-    if (this.data != null) {
+    if (this.data.id != null) {
       // Funcionalidad Actualizar categoria
 
       let obsCategoryUpdate: Observable<Object> = this.categoryService.updateCategory(dataJson, this.data.id);
@@ -120,6 +125,7 @@ export class NewCategoryComponent implements OnInit {
    * @param data 
    */
   updateForm (data:any) {
+    console.log("NewCategory - updateForm");
 
     // Construccion del formulario con los datos recibidos
     // Asi, cuando se abra el formulario, se mostraran los datos actuales del registro
