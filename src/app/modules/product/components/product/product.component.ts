@@ -1,9 +1,13 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { CategoryElement } from 'src/app/modules/category/components/category/category.component';
+import { NewCategoryComponent } from 'src/app/modules/category/components/new-category/new-category.component';
 import { ProductService } from 'src/app/modules/shared/services/product.service';
+import { NewProductComponent } from '../new-product/new-product.component';
 
 @Component({
   selector: 'app-product',
@@ -14,6 +18,8 @@ export class ProductComponent implements OnInit {
 
   // Inyecciones de dependencias
   private productService = inject(ProductService);
+  public  dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
 
   // Columnas que van a ser mostradas en la tabla de la consulta 
   displayedColumns: string[] = ['id', 'name', 'price', 'account', 'category', 'picture', 'actions'];
@@ -73,7 +79,45 @@ export class ProductComponent implements OnInit {
     }
 
   }
+
+  /**
+   * Apetura de Dialog para mostra el componente de Nuevo Producto
+   */
+  openProductDialog(): void {
+    console.log("Product - openProductDialog ");
+
+    // Se abre un Dialog que contiene en su interior el componente NewProductComponent
+    const dialogRef = this.dialog.open(NewProductComponent, {
+      width: '450px',   // ancho de la ventana del dialog
+      data: {},
+    });
+
+    // Logica a ejecutar una vez se haya cerrado la ventana Dialog
+    dialogRef.afterClosed().subscribe( (result: any) => {
+      console.log('The dialog was closed');
+      
+      // Controlamos el retorno correcto o error
+      if (result == 1) {
+        this.openSnackBar("Producto Agregado", "Exito");
+        // Recargamos la tabla de productos
+        this.getProducts();
+      } else if (result == 2) {
+        this.openSnackBar("Se produjo un error al guardar producto", "Error");
+      }
+
+    });
+  }
   
+  /**
+   * Abrir mensaje en una ventana
+   * --- Esto podria estar en el modulo shared --- 
+   */
+    openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
+
+      return this.snackBar.open(message, action, {duration: 2000});
+  
+    }
+    
 }
 
 // Interface con el objeto Producto

@@ -1,0 +1,62 @@
+<p>new-product works!</p>
+<h2 mat-dialog-title>{{estadoFormulario}} nuevo Producto</h2>
+
+<!-- Contenido de la ventana Dialog -->
+<mat-dialog-content>
+    <!-- Este formulario utiliza el objeto productForm del typescript -->
+    <!-- Dicho objeto tiene "name" y "price" que van a ser utilizados en los campos -->
+    <form action="" [formGroup]="productForm" >
+        <div class="product-container">
+            <mat-form-field>
+                <input matInput placeholder="Nombre" formControlName="name" required />
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="number" placeholder="Precio" formControlName="price" required />
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput type="number" placeholder="Cantidad" formControlName="account" required />
+            </mat-form-field>
+
+            <mat-form-field>
+                <!-- Combo de Categorias -->
+                <mat-label>Categoria</mat-label>
+                <mat-select formControlName="category">
+                    <mat-option *ngFor="let cat of categories" [value]="cat.id" >
+                        {{cat.name}}
+                    </mat-option>
+                </mat-select>
+                
+            </mat-form-field>
+
+            <!-- <mat-form-field>
+                <textarea matInput placeholder="Foto" formControlName="picture" required ></textarea>
+            </mat-form-field> -->
+
+            <!-- Componente Picture -->
+            <div>
+                <mat-label>Foto: </mat-label>
+                <label for="file-upload-1" class="subir" >Subir archivo</label>
+                <!-- Enviamos la foto subida por el usuario al Typescript dentro del evento -->
+                <input id="file-upload-1" accept="image/png, image/jpeg" (change)="onFileChanged($event)" 
+                        type="file" formControlName="picture" class="input-file" > 
+                    <span> {{nameImg}} </span>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<!-- Acciones de la ventana Dialog -->
+<mat-dialog-actions>
+    <!-- Si la carga del formulario es invalid, entonces el boton "save" aparece disabled -->
+    <button mat-button color="primary" (click)="onSave()" [disabled]="productForm.invalid" >
+        <mat-icon>save</mat-icon>
+        Guardar 
+    </button>
+
+    <button mat-button color="primary" (click)="onCancel()">
+        <mat-icon>cancel</mat-icon>
+        Cancelar 
+    </button>
+</mat-dialog-actions>

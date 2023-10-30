@@ -27,5 +27,16 @@ export class ProductService {
 
   }
 
+  /**
+   * Invoca al webservice del Servidor que sirve para almacenar Producto
+   * @param   body        Datos del producto a almacenar
+   * @returns Observable  Observable con la info de la respuesta de la invocacion al webservice
+   */
+  saveProduct(body: any): Observable<Object> {
+    const endpoint = `${base_url}/products`;   // endpoint del webservice del servidor que devuelve todos los productos
+
+    return this.http.post(endpoint, body);
+
+  }
 
 }
