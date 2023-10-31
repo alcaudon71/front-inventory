@@ -35,8 +35,27 @@ export class ProductService {
   saveProduct(body: any): Observable<Object> {
     const endpoint = `${base_url}/products`;   // endpoint del webservice del servidor que devuelve todos los productos
 
+    console.log("Invocacion al webservice de saveProduct");
+
     return this.http.post(endpoint, body);
 
   }
+
+  /**
+   * Invoca al webservice del Servidor que sirve para actualizar Producto
+   * @param body 
+   * @param id 
+   * @returns 
+   */
+  updateProduct(body: any, id: any): Observable<Object> {
+    const endpoint = `${base_url}/products/${id}`;   // endpoint del webservice del servidor que devuelve todos los productos
+
+    console.log("Invocacion al webservice de updateProduct");
+    console.log("endpoint: " + endpoint);
+    console.log("body: " + body);
+
+    return this.http.put(endpoint, body);
+  }
+
 
 }

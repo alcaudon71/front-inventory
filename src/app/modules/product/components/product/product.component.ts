@@ -64,7 +64,7 @@ export class ProductComponent implements OnInit {
       // Vamos recuperando los datos de la lista
       // Transformamos los campos categoria e imagen 
       listCProduct.forEach( (element: ProductElement) => {
-        element.category = element.category.name;
+        //element.category = element.category.name;
         // La imagen viene en formato base64 del webservice del servidor 
         // Le tenemos que añadir el siguiente prefijo para que sea legible por Angular
         element.picture = 'data:image/jpeg;base64,' + element.picture;
@@ -112,12 +112,47 @@ export class ProductComponent implements OnInit {
    * Abrir mensaje en una ventana
    * --- Esto podria estar en el modulo shared --- 
    */
-    openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
+  openSnackBar(message: string, action: string): MatSnackBarRef<SimpleSnackBar> {
 
       return this.snackBar.open(message, action, {duration: 2000});
   
-    }
-    
+  }
+  
+  /**
+   * Modificar Producto
+   * @param id1         Id del producto
+   * @param name1       Nuevo nombre del producto
+   * @param price1      Nuevo precio del produto
+   * @param account1    Nueva cantidad del producto
+   * @param category1   Nueva categoria del producto 
+   */
+  edit(id1: number, name1: string, price1:number, account1:number, category1:any): void {
+
+    console.log("Product - edit ");
+
+    // Se abre un Dialog que contiene en su interior el componente NewProductComponent
+    const dialogRef = this.dialog.open(NewProductComponent, {
+      width: '450px',   // ancho de la ventana del dialog
+      data: {id: id1, name: name1, price: price1, account: account1, category: category1},
+    });
+
+    // Logica a ejecutar una vez se haya cerrado la ventana Dialog
+    dialogRef.afterClosed().subscribe( (result: any) => {
+      console.log('The dialog was closed');
+      
+      // Controlamos el retorno correcto o error
+      if (result == 1) {
+        this.openSnackBar("Producto Modificado", "Exito");
+        // Recargamos la tabla de productos
+        this.getProducts();
+      } else if (result == 2) {
+        this.openSnackBar("Se produjo un error al modificar producto", "Error");
+      }
+
+    });
+
+  }
+
 }
 
 // Interface con el objeto Producto

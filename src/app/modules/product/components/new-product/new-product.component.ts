@@ -59,7 +59,7 @@ export class NewProductComponent implements OnInit{
     // Por tanto, la ventana Dialog se abrira mostrando en el formulario los datos actuales
     if (this.data.name != null) {
       console.log(" *** Funcionalidad Modificar *** ");
-      //this.updateForm (this.data);
+      this.updateForm (this.data);
       this.estadoFormulario = "Actualizar";
     } else {
       console.log(" *** Funcionalidad Agregar *** ");
@@ -82,6 +82,12 @@ export class NewProductComponent implements OnInit{
         picture: this.selectedFile 
       }
   
+      console.log("dataJson.name: " + dataJson.name);
+      console.log("dataJson.price: " + dataJson.price);
+      console.log("dataJson.account: " + dataJson.account);
+      console.log("dataJson.category: " + dataJson.category);
+      console.log("dataJson.picture: " + dataJson.picture);
+
       // Formulario de datos que hay que enviar al servicio
       const uploadImageData = new FormData();
 
@@ -98,10 +104,7 @@ export class NewProductComponent implements OnInit{
       // Si el Dialog ya tenia datos al principio --> funcion modificar
       if (this.data.id != null) {
         // Funcionalidad Actualizar producto
-  
-        // ????????????????????????????????????????????????????????????????????????????????????????????????????????
-        //let obsProductUpdate: Observable<Object> = this.productService.updateProduct(dataJson, this.data.id);
-        let obsProductUpdate: Observable<Object> = this.productService.saveProduct(dataJson);
+        let obsProductUpdate: Observable<Object> = this.productService.updateProduct(uploadImageData, this.data.id);
   
         obsProductUpdate.subscribe({
           next: (item: any) => {
@@ -179,6 +182,28 @@ export class NewProductComponent implements OnInit{
 
     // Extraemos el nombre del fichero
     this.nameImg = event.target.files[0].name;
+  }
+
+
+  /**
+   * Actualizar formulario con los datos actuales del producto
+   * --> El campo Foto se deja en blanco y no se muestra la imagen actual
+   * @param data  Datos actuales del producto
+   */
+  updateForm (data : any): void {
+
+    console.log("NewProduct - updateForm");
+
+    // Construccion del formulario con los datos recibidos
+    // Asi, cuando se abra el formulario, se mostraran los datos actuales del registro
+    this.productForm = this.fb.group({
+      name:     [data.name, Validators.required],   // valor por defecto y validacion requerida
+      price:    [data.price, Validators.required],
+      account:  [data.account, Validators.required],
+      category: [data.category.id, Validators.required],
+      picture:  ['', Validators.required]
+    });
+
   }
 
 }
