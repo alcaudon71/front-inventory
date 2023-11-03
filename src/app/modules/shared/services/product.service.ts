@@ -57,5 +57,21 @@ export class ProductService {
     return this.http.put(endpoint, body);
   }
 
+  /**
+   * Eliminar Producto
+   * @param id  Id del producto a eliminar
+   * @returns Observable<Object>  Observable de la invocacion del servicio Eliminar Producto
+   */
+  deleteProduct (id: any): Observable<Object> {
+
+    const endpoint = `${base_url}/products/${id}`;   // endpoint del webservice del servidor que elimina producto
+
+    console.log("Invocacion al webservice de deleteProduct");
+    console.log("endpoint: " + endpoint);
+    console.log("id: " + id);
+
+    return this.http.delete(endpoint);
+
+  }
 
 }

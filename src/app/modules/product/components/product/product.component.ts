@@ -8,6 +8,7 @@ import { CategoryElement } from 'src/app/modules/category/components/category/ca
 import { NewCategoryComponent } from 'src/app/modules/category/components/new-category/new-category.component';
 import { ProductService } from 'src/app/modules/shared/services/product.service';
 import { NewProductComponent } from '../new-product/new-product.component';
+import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
 
 @Component({
   selector: 'app-product',
@@ -147,6 +148,37 @@ export class ProductComponent implements OnInit {
         this.getProducts();
       } else if (result == 2) {
         this.openSnackBar("Se produjo un error al modificar producto", "Error");
+      }
+
+    });
+
+  }
+
+  /**
+   * Eliminar producto
+   * @param id1   Id del producto a eliminar
+   */
+  delete (id1: any): void {
+
+    console.log("Product - delete ");
+
+    // Se abre un Dialog que contiene en su interior el componente ConfirmComponent
+    const dialogRef = this.dialog.open(ConfirmComponent, {
+      width: '450px',   // ancho de la ventana del dialog
+      data: {id: id1, module: "product"}, // se indica el tipo de objeto a eliminar (product)
+    });
+
+    // Logica a ejecutar una vez se haya cerrado la ventana Dialog
+    dialogRef.afterClosed().subscribe( (result: any) => {
+      console.log('The dialog was closed');
+      
+      // Controlamos el retorno correcto o error
+      if (result == 1) {
+        this.openSnackBar("Producto Eliminado", "Exito");
+        // Recargamos la tabla de productos
+        this.getProducts();
+      } else if (result == 2) {
+        this.openSnackBar("Se produjo un error al eliminar producto", "Error");
       }
 
     });

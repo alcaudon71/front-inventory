@@ -145,7 +145,7 @@ export class CategoryComponent implements OnInit {
   onDelete (id1: number): void  {
     // Se abre un Dialog que contiene en su interior el componente ventana modal de Confirmacion
     const dialogRef = this.dialog.open(ConfirmComponent, {
-      data: {id: id1},
+      data: {id: id1, module: "category"}, // se indica el tipo de objeto a eliminar (category)
     });
 
     // Logica a ejecutar una vez se haya cerrado la ventana Dialog
