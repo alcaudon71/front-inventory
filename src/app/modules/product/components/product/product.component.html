@@ -10,7 +10,7 @@
             <mat-form-field hintLabel="Busque producto" appearance="fill">
                 <mat-label>Buscar Productos</mat-label>
                 <!-- (keyup)="buscar(input1.value)" -->
-                <input matInput #input1 >   <!-- keyup dispara evento cuando soltemos la tecla -->
+                <input matInput #input1 (keyup)="buscar(input1.value)" >   <!-- keyup dispara evento cuando soltemos la tecla -->
             </mat-form-field>
         </div>
     </mat-card-header>

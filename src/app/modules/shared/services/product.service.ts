@@ -74,4 +74,22 @@ export class ProductService {
 
   }
 
+  /**
+   * Buscar por nombre de Producto
+   * @param name  Nombre del producto que debe ser buscado
+   * @returns Observable<Object>  Observable de la invocacion del servicio
+   */
+  getProductByName (name: any): Observable<Object> {
+
+    const endpoint = `${base_url}/products/filter/${name}`;   // endpoint del webservice del servidor que busca cadena
+
+    console.log("Invocacion al webservice de filterByName");
+    console.log("endpoint: " + endpoint);
+    console.log("name: " + name);
+
+    return this.http.get(endpoint);
+    
+  }
+
+
 }

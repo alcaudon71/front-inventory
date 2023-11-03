@@ -185,6 +185,33 @@ export class ProductComponent implements OnInit {
 
   }
 
+
+  buscar(name: any) {
+
+
+    if (name.length == 0) {
+      // Si no se busca ninguna cadena, recargamos todos los productos
+      return this.getProducts();
+    
+    }
+
+    // Creamos el observable
+    let obsProductByName = this.productService.getProductByName(name);
+
+    // Nos suscribimos al observable
+    obsProductByName.subscribe({
+      next: (item: any) => {
+        this.processProductResponse(item);
+      },
+      error: (error: any) => {
+
+      }
+    })
+
+
+  }
+
+
 }
 
 // Interface con el objeto Producto
