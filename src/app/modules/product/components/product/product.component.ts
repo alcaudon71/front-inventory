@@ -9,6 +9,7 @@ import { NewCategoryComponent } from 'src/app/modules/category/components/new-ca
 import { ProductService } from 'src/app/modules/shared/services/product.service';
 import { NewProductComponent } from '../new-product/new-product.component';
 import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
+import { UtilService } from 'src/app/modules/shared/services/util.service';
 
 @Component({
   selector: 'app-product',
@@ -21,6 +22,9 @@ export class ProductComponent implements OnInit {
   private productService = inject(ProductService);
   public  dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+  private util = inject(UtilService);
+
+  isAdmin: any;
 
   // Columnas que van a ser mostradas en la tabla de la consulta 
   displayedColumns: string[] = ['id', 'name', 'price', 'account', 'category', 'picture', 'actions'];
@@ -35,6 +39,16 @@ export class ProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProducts();
+
+    // Obtencion de roles keycloak del usuario
+    let roles: string[] = this.util.getRoles();
+
+    console.log("roles: " + roles);
+   
+    // Verificamos si el usuario tiene asignado el role Admin
+    // --> Esta variable se utilizara en el HTML para visualizar u ocultar componentes
+    this.isAdmin = this.util.isAdmin();
+
   }
 
   /**

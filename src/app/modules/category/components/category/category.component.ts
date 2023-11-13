@@ -7,6 +7,7 @@ import { NewCategoryComponent } from '../new-category/new-category.component';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { ConfirmComponent } from 'src/app/modules/shared/components/confirm/confirm.component';
 import { MatPaginator } from '@angular/material/paginator';
+import { UtilService } from 'src/app/modules/shared/services/util.service';
 
 @Component({
   selector: 'app-category',
@@ -19,7 +20,9 @@ export class CategoryComponent implements OnInit {
   private categoryService = inject(CategoryService);
   public  dialog = inject(MatDialog);
   private snackBar = inject(MatSnackBar);
+  private util = inject(UtilService);
   
+  isAdmin: any;
 
   // Columnas que van a ser mostradas en la tabla de la consulta 
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
@@ -34,6 +37,16 @@ export class CategoryComponent implements OnInit {
   ngOnInit(): void {
     console.log("CategoryComponent - ngOnInit");
     this.getCategories();
+
+    // Obtencion de roles keycloak del usuario
+    let roles: string[] = this.util.getRoles();
+
+    console.log("roles: " + roles);
+
+    // Verificamos si el usuario tiene asignado el role Admin
+    // --> Esta variable se utilizara en el HTML para visualizar u ocultar componentes
+    this.isAdmin = this.util.isAdmin();
+
   }
 
   // obtencion de categorias
