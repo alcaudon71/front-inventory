@@ -212,6 +212,36 @@ export class CategoryComponent implements OnInit {
 
   }
 
+  /**
+   * Exportar lista de categorias a fichero excel xlsx 
+   */
+  exportExcel(): void {
+
+    let obsExportCategories: Observable<Object> = this.categoryService.exportCategories();
+
+    obsExportCategories.subscribe({
+      next: (item: any) => {
+        // Definimos el fichero
+        let file = new Blob([item], 
+                    {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})   // formato excel xml 2007
+        let fileUrl = URL.createObjectURL(file);
+
+        // Creamos el anchor
+        var anchor = document.createElement("a");
+        anchor.download = "categories.xlsx";   // nombre con el que se va a almacenar el fichero xlsx
+        anchor.href = fileUrl;
+        anchor.click();
+
+        this.openSnackBar("Archivo exportado correctamente", "Exitosa");
+      },
+      error: (error: any) => {
+        this.openSnackBar("No se pudo exportar el archivo", "Error");
+      }
+    });
+
+  }
+
+
 }
 
 export interface CategoryElement {

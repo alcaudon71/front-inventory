@@ -88,4 +88,19 @@ export class CategoryService {
 
   }
 
+  /**
+   * Exportar lista de Categorias a fichero excel
+   * @returns Observable
+   */
+  exportCategories(): Observable<Object> {
+    const endpoint = `${base_url}/categories/export/excel`;  
+
+    let retorno: Observable<Object> = this.http.get(endpoint, {
+      responseType: 'blob'   // blob --> vamos a recibir una respuesta con un fichero tipo blob
+    });   
+
+    return retorno;
+
+  }
+
 }

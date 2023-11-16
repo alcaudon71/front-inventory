@@ -91,5 +91,19 @@ export class ProductService {
     
   }
 
+  /**
+   * Exportar lista de Productos a fichero excel
+   * @returns Observable
+   */
+  exportProdutcs(): Observable<Object> {
+      const endpoint = `${base_url}/products/export/excel`;  
+  
+      let retorno: Observable<Object> = this.http.get(endpoint, {
+        responseType: 'blob'   // blob --> vamos a recibir una respuesta con un fichero tipo blob
+      });   
+  
+      return retorno;
+  
+  }
 
 }
